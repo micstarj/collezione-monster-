@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Collezione Monster</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&display=swap">
+<style>
+:root{--bg:#eef0ea;--card:#fff;--tx:#15180f;--mut:#667058;--ac:#3f8f00;--acx:#fff;--bd:#d9ddd0;--hd:'Barlow Condensed','Arial Narrow',Impact,sans-serif;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101309;--card:#1a1e12;--tx:#eef2e6;--mut:#9aa38a;--ac:#7fe000;--acx:#101309;--bd:#2b3120;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#101309;--card:#1a1e12;--tx:#eef2e6;--mut:#9aa38a;--ac:#7fe000;--acx:#101309;--bd:#2b3120;color-scheme:dark}
+*,*::before,*::after{box-sizing:inherit}
+html,body{margin:0}
+body{background:var(--bg);color:var(--tx);font:16px/1.4 system-ui,-apple-system,'Segoe UI',sans-serif;-webkit-tap-highlight-color:transparent}
+#main{max-width:560px;margin:0 auto;padding:16px 16px 110px}
+h1,h2,.big{font-family:var(--hd);font-weight:700;letter-spacing:.01em;margin:0}
+h1{font-size:34px;line-height:1}
+h2{font-size:22px;margin:22px 0 6px;display:flex;justify-content:space-between;align-items:baseline}
+h2 small{font:600 16px var(--hd);color:var(--mut)}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+button{font:inherit;color:inherit;cursor:pointer}
+.pri{background:var(--ac);color:var(--acx);border:0;border-radius:10px;padding:10px 16px;font-weight:700}
+.sec{background:transparent;border:1px solid var(--bd);border-radius:10px;padding:10px 16px}
+.danger{background:transparent;border:0;color:#d23b2a;padding:10px 4px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:8px 8px 10px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.card img,.ph{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:8px;background:var(--bg)}
+.ph{display:grid;place-items:center;font-size:40px}
+.pic{position:relative}
+.pic .t2{position:absolute;right:6px;bottom:6px;width:34%;aspect-ratio:3/4;object-fit:cover;border-radius:6px;border:2px solid var(--card)}
+.photos{display:flex;gap:12px;margin-top:12px}
+.slot{flex:1;min-width:0}
+.slot img,.slot .ph{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:8px;margin-bottom:6px}
+.slot input[type=file]{width:100%;font-size:13px}
+.card b{font-size:15px;margin-top:6px;line-height:1.2}
+.card span{font-size:13px;color:var(--mut);min-height:1.2em}
+.chips{display:flex;gap:8px;margin:10px 0 4px}
+.chips button{border:1px solid var(--bd);background:transparent;border-radius:99px;padding:6px 14px}
+.chips button.on{background:var(--ac);color:var(--acx);border-color:var(--ac);font-weight:700}
+input[type=search],input[type=text],input[type=number]{width:100%;font:inherit;color:var(--tx);background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:11px 12px}
+.row{display:flex;align-items:center;gap:12px;padding:11px 4px;border-bottom:1px solid var(--bd)}
+.chk{width:26px;height:26px;border-radius:8px;border:2px solid var(--bd);display:grid;place-items:center;font-weight:700;flex:none;color:var(--acx)}
+.row.on .chk{background:var(--ac);border-color:var(--ac)}
+.nm{flex:1}
+.row:not(.on) .nm{color:var(--mut)}
+.ed{background:none;border:0;font-size:22px;line-height:1;padding:4px 10px;color:var(--mut)}
+.empty{color:var(--mut);padding:24px 4px}
+.big{font-size:84px;line-height:.9}
+.big small{font-size:34px;color:var(--mut)}
+.meter{height:12px;border-radius:99px;background:var(--bd);overflow:hidden;margin:12px 0 6px}
+.meter i{display:block;height:100%;background:var(--ac)}
+.bar{display:grid;grid-template-columns:90px 1fr 28px;gap:10px;align-items:center;margin:7px 0;font-size:15px}
+.bar i{height:10px;border-radius:99px;background:var(--ac);display:block;min-width:4px}
+.bar b{text-align:right}
+.hint{font-size:13px;color:var(--mut);margin-top:28px}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--card);border-top:1px solid var(--bd);padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px))}
+nav button{flex:1;background:none;border:0;padding:8px 0;font:600 16px var(--hd);color:var(--mut)}
+nav button.on{color:var(--ac)}
+#sheet{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:flex-end;z-index:20}
+#sheet[hidden]{display:none}
+.box{background:var(--bg);width:100%;max-width:560px;margin:0 auto;border-radius:18px 18px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px));max-height:92%;overflow:auto}
+.box label{display:block;font-size:14px;color:var(--mut);margin:12px 0 4px}
+.box .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.photo{display:flex;gap:12px;align-items:center;margin-top:12px}
+.photo img,.photo .ph{width:84px;height:112px;aspect-ratio:auto;flex:none}
+.own{display:flex;gap:10px;align-items:center;margin:16px 0 4px;font-size:17px}
+.own input{width:22px;height:22px;accent-color:var(--ac)}
+.acts{display:flex;gap:10px;margin-top:16px;align-items:center}
+.acts .pri{flex:1}
+#warn{background:#d23b2a;color:#fff;padding:8px 12px;font-size:14px}
+button:focus-visible,input:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+.card .pic img,#pm img{cursor:zoom-in}
+.pic .cnt{position:absolute;right:6px;bottom:6px;background:rgba(0,0,0,.65);color:#fff;font-style:normal;font-size:12px;font-weight:700;border-radius:99px;padding:2px 8px}
+.pm{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.pm .th{min-width:0}
+.pm img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:8px;display:block}
+.pm small{display:block;font-size:11px;color:var(--mut);text-align:center;margin:2px 0}
+.pm .ctl{display:flex;gap:4px}
+.pm .ctl button{flex:1;min-width:0;height:34px;padding:0;border:1px solid var(--bd);background:transparent;border-radius:8px;font-size:14px}
+.pm .ctl button:disabled{opacity:.3}
+#pm input[type=file]{width:100%;font-size:13px}
+#lb{position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.94);display:flex;align-items:center;justify-content:center;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0)}
+#lb[hidden]{display:none}
+#lb img{max-width:100%;max-height:100%;object-fit:contain}
+#lb button{position:absolute;background:rgba(255,255,255,.18);color:#fff;border:0;border-radius:99px;width:44px;height:44px;font-size:24px;line-height:1}
+#lb .x{top:calc(env(safe-area-inset-top,0px) + 12px);right:12px}
+#lb .pv,#lb .nx{top:50%;transform:translateY(-50%)}
+#lb .pv{left:8px}#lb .nx{right:8px}
+#lb.one .pv,#lb.one .nx,#lb.one .cn{display:none}
+#lb .cn{position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);text-align:center;color:#fff;font-size:14px}
+.chips.wrap{flex-wrap:wrap}
+.mvb{display:flex;gap:6px;margin-top:6px}
+.mvb button{flex:1;height:34px;padding:0;border:1px solid var(--bd);background:transparent;border-radius:8px;font-size:14px}
+.pic .qb{position:absolute;left:6px;top:6px;background:rgba(0,0,0,.65);color:#fff;font-style:normal;font-size:12px;font-weight:700;border-radius:99px;padding:2px 8px}
+.stp{display:flex;justify-content:space-between;align-items:center;margin-top:14px;font-size:17px}
+.stp div{display:flex;align-items:center;gap:12px}
+.stp button{width:42px;height:42px;border:1px solid var(--bd);background:transparent;border-radius:10px;font-size:22px;padding:0;line-height:1}
+.stp b{min-width:26px;text-align:center}
+.dati{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+</style>
+</head>
+<body>
+<div id="warn" hidden>Salvataggio non disponibile in questo browser: i dati si perdono alla chiusura.</div>
+<div id="main"></div>
+<nav>
+<button data-tab="collezione">Collezione</button>
+<button data-tab="lista">Lista</button>
+<button data-tab="desideri">Desideri</button>
+<button data-tab="stats">Statistiche</button>
+</nav>
+<div id="sheet" hidden></div>
+<div id="lb" hidden><button type="button" class="x" aria-label="Chiudi">✕</button><button type="button" class="pv" aria-label="Precedente">‹</button><img alt=""><button type="button" class="nx" aria-label="Successiva">›</button><div class="cn"></div></div>
+<script>
+const PRESETS={
+"Classiche":["Original Green","Zero Sugar","Lo-Carb","Absolutely Zero"],
+"Ultra":["Ultra White","Ultra Paradise","Ultra Blue","Ultra Red","Ultra Violet","Ultra Gold","Ultra Rosa","Ultra Fiesta","Ultra Peachy Keen","Ultra Watermelon","Ultra Strawberry Dreams","Ultra Sunrise","Ultra Fantasy Ruby Red","Ultra Black","Ultra Vice Guava"],
+"Juice":["Mango Loco","Pipeline Punch","Pacific Punch","Aussie Lemonade","Khaotic","Bad Apple","Papillon","Monarch","Ripper"],
+"Rehab":["Peach Tea","Lemonade","Wild Berry","Tea + Lemonade","Green Tea"],
+"Reserve":["White Pineapple","Watermelon","Orange Dreamsicle"],
+"Java":["Mean Bean","Loca Moca","Irish Crème","Vanilla Light","Salted Caramel"],
+"Mule":["Ginger Brew"],
+"Nitro":["Super Dry","Cosmic Peach"],
+"Edizioni speciali":["The Doctor","Lewis Hamilton","Assault","Import"]
+};
+const EXTRA={
+"Classiche":["Electric Blue","Orange Dreamsicle","Unleaded","Cuba Lima","Cuba Libre","M3","Import Light","M-100 Ghost","M-100 Phantom","Super Cola","Full Throttle","Uber Brew"],
+"Ultra":["Ultra Citron","Ultra Wild Passion","Ultra Blue Hawaiian"],
+"Juice":["Rio Punch","Khaos","M-80","Mixxd"],
+"Rehab":["Rojo Tea","Protean","Orangeade","Pink Lemonade","White Dragon Tea","Strawberry Lemonade","Watermelon","Lemonade Tea"],
+"Reserve":["Peaches n’ Crème"],
+"Java":["Café Latte","Triple Shot Mocha","Triple Shot French Vanilla","French Vanilla","Cold Brew Latte","Kona Blend","Swiss Chocolate","Irish Blend","Lo-Ball","Nut-Up","Big Black","Chai Hai","Russian","Toffee","Kona Cappuccino","Cold Brew Sweet Black","Farmer’s Oats","Vanilla Espresso","Espresso and Cream"],
+"Killer Brew":["Loca Moca","Mean Bean"],
+"Hydro":["Manic Melon","Tropical Thunder","Purple Passion","Blue Ice","Zero Sugar"],
+"Super Fuel":["Red Dawg","Blue Streak"],
+"Mutant":["Super Soda","Red Dawn","White Lightning"],
+"Dragon Tea":["Green Tea","Yerba Mate","White Tea","Ice Tea Lemon","Raspberry Tea","Peach Tea"],
+"Maxx / Extra Strength":["Maxx Super Dry","Maxx Eclipse","Maxx Solaris","Maxx Zero Sugar Mango Matic","Maxx Zero Sugar Rad Red","Extra Strength Super Dry","Extra Strength Anti Gravity","Extra Strength Black Ice","Extra Strength Killer-B","Nitrous Super Dry","Nitrous Killer-B"],
+"Dub / Punch":["Dub Mad Dog","Dub Baller’s Blend","Punch Mixxd","Punch Khaos","Punch Ripper","Punch Pipeline Punch","Punch Mango Loco","Punch Pacific Punch","Punch Bad Apple"],
+"The Beast Unleashed (alcolica)":["Mean Green","White Haze","Peach Perfect","Scary Berries"],
+"Versioni Giappone":["Monster Energy (Giappone)","Absolutely Zero (Giappone)","Zero Sugar (Giappone)","Khaos 50% (Giappone)","Khaos 30% (Giappone)","Pipeline Punch (Giappone)","Mango Loco (Giappone)","Aussie Style Lemonade (Giappone)","Papillon (Giappone)","Ripper (Giappone)","Bad Apple (Giappone)","Ultra (Giappone)","Ultra Paradise (Giappone)","Ultra Peachy Keen (Giappone)","Ultra Violet (Giappone)","Ultra Fantasy Ruby Red (Giappone)","Ultra Vice Guava (Giappone)"],
+"Muscle":["Chocolate","Vanilla","Coffee","Strawberry"],
+"Edizioni speciali":["Rossi","Lewis Hamilton Zero Sugar","Lando Norris","Red White Blue Razz","Gronk","Gronk Formula #87"]
+};
+for(const l in EXTRA){const c=PRESETS[l]||[];PRESETS[l]=c.concat(EXTRA[l].filter(n=>!c.includes(n)))}
+const PAESI=["Italia","Spagna","Francia","Germania","Regno Unito","Irlanda","Portogallo","Grecia","Polonia","Austria","Svizzera","Belgio","Paesi Bassi","USA","Messico","Brasile","Australia","Giappone"];
+let db=null,items=[],tab="collezione",flt="tutte",q="",edit=null,editLine=null;
+let swo=false;let srt="az";try{srt=localStorage.getItem("monster_sort")||"az"}catch(e){}
+const SRT=[["az","A–Z"],["anno","Anno"],["paese","Paese"],["linea","Linea"],["man","Manuale"]];
+const nm=(a,b)=>a.name.localeCompare(b.name);
+const emptyLast=(x,y,d)=>(x?0:1)-(y?0:1)||(x&&y?d*String(x).localeCompare(String(y),undefined,{numeric:true}):0);
+function sortItems(l,m){const c={az:nm,anno:(a,b)=>emptyLast(a.year,b.year,-1)||nm(a,b),paese:(a,b)=>emptyLast(a.country,b.country,1)||nm(a,b),linea:(a,b)=>a.line.localeCompare(b.line)||nm(a,b),man:(a,b)=>(a.ord==null?1e9:a.ord)-(b.ord==null?1e9:b.ord)||nm(a,b)}[m]||nm;return l.slice().sort(c)}
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+function openDb(){return new Promise((res,rej)=>{try{const r=indexedDB.open("monster",1);r.onupgradeneeded=()=>r.result.createObjectStore("items",{keyPath:"id"});r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}catch(e){rej(e)}})}
+function getAll(){return new Promise((res,rej)=>{const q=db.transaction("items").objectStore("items").getAll();q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error)})}
+function put(it){if(!db)return;try{db.transaction("items","readwrite").objectStore("items").put(it)}catch(e){}}
+function del(id){if(!db)return;try{db.transaction("items","readwrite").objectStore("items").delete(id)}catch(e){}}
+function seed(){let n=0;for(const l in PRESETS)for(const f of PRESETS[l])items.push({id:"p"+(n++),name:f,line:l,owned:false,year:"",country:"",photos:[],custom:false})}
+
+function card(i,man){
+ return `<div class="card" data-a="edit" data-id="${i.id}"><div class="pic">${i.photos&&i.photos[0]?`<img src="${i.photos[0]}" alt="" data-i="0">`:`<div class="ph">🥫</div>`}${i.photos&&i.photos.length>1?`<i class="cnt">🖼 ${i.photos.length}</i>`:""}${(i.qty>1||i.swap>0)?`<i class="qb">${i.qty>1?"×"+i.qty:""}${i.qty>1&&i.swap>0?" · ":""}${i.swap>0?"🔁 "+i.swap:""}</i>`:""}</div><b>${esc(i.name)}</b><span>${[i.year,i.country].filter(Boolean).map(esc).join(", ")}</span>${man?`<div class="mvb"><button type="button" data-a="mv" data-id="${i.id}" data-d="-1" aria-label="Sposta prima">◀</button><button type="button" data-a="mv" data-id="${i.id}" data-d="1" aria-label="Sposta dopo">▶</button></div>`:""}</div>`;
+}
+function viewCol(){
+ const all=items.filter(i=>i.owned),o=sortItems(all.filter(i=>!swo||i.swap>0),srt),man=srt==="man"&&!swo;
+ const chs=`<div class="chips wrap">${SRT.map(([k,t])=>`<button data-a="srt" data-k="${k}" class="${srt===k?"on":""}">${t}</button>`).join("")}<button data-a="swp" class="${swo?"on":""}">🔁 Da scambiare</button></div>`;
+ return `<div class="top"><h1>Le mie lattine</h1><button class="pri" data-a="new">Aggiungi</button></div>`+(all.length>1?chs:"")+
+  (o.length?`<div class="grid">${o.map(i=>card(i,man)).join("")}</div>`:`<p class="empty">${swo?"Nessuna lattina da scambiare.":"Ancora nessuna lattina. Apri <b>Lista</b> e spunta quelle che hai."}</p>`);
+}
+function rows(){
+ const f=items.filter(i=>(flt==="tutte"||(flt==="mancanti"?!i.owned:i.owned))&&i.name.toLowerCase().includes(q.toLowerCase()));
+ const g={};f.forEach(i=>{(g[i.line]=g[i.line]||[]).push(i)});
+ return Object.keys(g).map(l=>{const a=g[l];return `<h2><span>${esc(l)} <small>${a.filter(i=>i.owned).length}/${a.length}</small></span><button class="ed" data-a="eline" data-l="${esc(l)}" aria-label="Modifica linea ${esc(l)}">⋯</button></h2>`+a.map(i=>`<div class="row${i.owned?" on":""}" data-a="tog" data-id="${i.id}"><span class="chk">${i.owned?"✓":""}</span><span class="nm">${i.wish?"★ ":""}${esc(i.name)}</span><button class="ed" data-a="edit" data-id="${i.id}" aria-label="Modifica ${esc(i.name)}">⋯</button></div>`).join("")}).join("")||`<p class="empty">Nessun risultato.</p>`;
+}
+function viewList(){
+ const ch=(k,t)=>`<button data-a="flt" data-k="${k}" class="${flt===k?"on":""}">${t}</button>`;
+ return `<div class="top"><h1>Lista gusti</h1><button class="pri" data-a="new">Aggiungi</button></div><input type="search" id="q" placeholder="Cerca un gusto" value="${esc(q)}"><div class="chips">${ch("tutte","Tutte")}${ch("mancanti","Mancanti")}${ch("mie","Ce l’ho")}</div><div id="rows">${rows()}</div>`;
+}
+function viewWish(){
+ const w=items.filter(i=>i.wish&&!i.owned).sort((a,b)=>a.line.localeCompare(b.line)||a.name.localeCompare(b.name));
+ const g={};w.forEach(i=>{(g[i.line]=g[i.line]||[]).push(i)});
+ return `<div class="top"><h1>Desideri</h1><button class="pri" data-a="newwish">Aggiungi</button></div>`+
+  (Object.keys(g).map(l=>`<h2><span>${esc(l)} <small>${g[l].length}</small></span></h2>`+g[l].map(i=>`<div class="row on" data-a="edit" data-id="${i.id}"><span class="chk">★</span><span class="nm">${esc(i.name)}</span><button class="ed" data-a="got" data-id="${i.id}" aria-label="Preso: ${esc(i.name)}">✓</button></div>`).join("")).join("")||`<p class="empty">Nessun desiderio. Segna “La voglio” nella scheda di una lattina che ti manca.</p>`)+
+  (w.length?`<p class="hint">Tocca ✓ quando la prendi: passa nella tua collezione.</p>`:"");
+}
+function bars(map,byKey){
+ let e=Object.entries(map);
+ e=byKey?e.sort((a,b)=>String(b[0]).localeCompare(String(a[0]))):e.sort((a,b)=>b[1]-a[1]);
+ const mx=Math.max(1,...e.map(x=>x[1]));
+ return e.map(([k,v])=>`<div class="bar"><span>${esc(k)}</span><i style="width:${v/mx*100}%"></i><b>${v}</b></div>`).join("")||`<p class="empty">Nessun dato ancora.</p>`;
+}
+function viewStats(){
+ const o=items.filter(i=>i.owned),t=items.length,p=t?Math.round(o.length/t*100):0;
+ const pa={},an={},li={};
+ o.forEach(i=>{const c=i.country||"Non indicato",y=i.year||"Non indicato";pa[c]=(pa[c]||0)+1;an[y]=(an[y]||0)+1});
+ items.forEach(i=>{const x=li[i.line]||(li[i.line]=[0,0]);x[1]++;if(i.owned)x[0]++});
+ const lines=Object.keys(li).map(l=>`<div class="bar"><span>${esc(l)}</span><i style="width:${li[l][0]/li[l][1]*100}%"></i><b>${li[l][0]}/${li[l][1]}</b></div>`).join("");
+ return `<div class="top"><h1>Statistiche</h1></div><div class="big">${o.length}<small> / ${t}</small></div><div class="meter"><i style="width:${p}%"></i></div><div>${p}% della lista, ${t-o.length} mancanti</div><h2>Per linea</h2>${lines}<h2>Per paese</h2>${bars(pa)}<h2>Per anno</h2>${bars(an,true)}<h2>Backup</h2><div class="dati"><button class="pri" data-a="exp">Esporta backup</button><button class="sec" data-a="imp">Importa backup</button><input type="file" id="f-imp" accept=".json,application/json" style="display:none"></div><p class="hint">${bkInfo()}</p><p class="hint">Per averla come app: dal menu del browser scegli “Aggiungi alla schermata Home”.</p>`;
+}
+function render(){
+ document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.tab===tab));
+ $("#main").innerHTML=tab==="collezione"?viewCol():tab==="lista"?viewList():tab==="desideri"?viewWish():viewStats();
+ renderSheet();
+}
+function renderSheet(){
+ const s=$("#sheet");
+ if(editLine){const L=editLine;s.hidden=false;s.innerHTML=`<div class="box" role="dialog" aria-label="Modifica linea"><h1>Modifica linea</h1><label for="f-line">Nome linea</label><input type="text" id="f-line" value="${esc(L.name)}"><p class="hint" style="margin-top:10px">${L.n} lattine in questa linea. Rinominandola cambia per tutte.</p><div class="acts"><button class="pri" data-a="lsave">Salva</button><button class="sec" data-a="lclose">Annulla</button><button class="danger" data-a="ldel">Elimina linea</button></div></div>`;return}
+ if(!edit){s.hidden=true;s.innerHTML="";return}
+ const e=edit;s.hidden=false;
+ s.innerHTML=`<div class="box" role="dialog" aria-label="Scheda lattina">
+ <h1>${e.isNew?"Nuova lattina":"Scheda lattina"}</h1>
+ <label for="f-name">Gusto</label><input type="text" id="f-name" value="${esc(e.name)}" placeholder="Es. Ultra Paradise">
+ <label for="f-linea">Linea</label><input type="text" id="f-linea" list="linee" value="${esc(e.line)}" placeholder="Es. Ultra"><datalist id="linee">${[...new Set(items.map(i=>i.line))].map(p=>`<option value="${esc(p)}">`).join("")}</datalist>
+ <div class="two"><div><label for="f-year">Anno</label><input type="number" id="f-year" inputmode="numeric" min="2002" max="2030" value="${esc(e.year)}"></div>
+ <div><label for="f-country">Paese</label><input type="text" id="f-country" list="paesi" value="${esc(e.country)}"></div></div>
+ <datalist id="paesi">${PAESI.map(p=>`<option value="${p}">`).join("")}</datalist>
+ <div id="pm">${pmHtml(e)}</div>
+ <label for="f-note">Note</label><input type="text" id="f-note" value="${esc(e.note)}" placeholder="Es. edizione limitata, comprata a…">
+ <label class="own"><input type="checkbox" id="f-owned" ${e.owned?"checked":""}>Ce l’ho</label>
+ <div class="stp"><span>Quante ne ho</span><div><button type="button" data-a="qty" data-f="qty" data-d="-1" aria-label="Meno">−</button><b id="v-qty">${e.qty||1}</b><button type="button" data-a="qty" data-f="qty" data-d="1" aria-label="Più">+</button></div></div>
+ <div class="stp"><span>Da scambiare</span><div><button type="button" data-a="qty" data-f="swap" data-d="-1" aria-label="Meno">−</button><b id="v-swap">${e.swap||0}</b><button type="button" data-a="qty" data-f="swap" data-d="1" aria-label="Più">+</button></div></div>
+ <label class="own"><input type="checkbox" id="f-wish" ${e.wish?"checked":""}>★ La voglio (desiderio)</label>
+ <div class="acts"><button class="pri" data-a="save">Salva</button><button class="sec" data-a="close">Annulla</button>${!e.isNew?`<button class="danger" data-a="del">Elimina</button>`:""}</div></div>`;
+}
+function pmHtml(e){const p=e.photos||[];
+ let h=`<div class="pm">`+p.map((src,i)=>`<div class="th"><img src="${src}" alt="" data-i="${i}"><small>${i===0?"Copertina":"&nbsp;"}</small><div class="ctl"><button type="button" data-a="pmv" data-i="${i}" data-d="-1" ${i===0?"disabled":""} aria-label="Sposta indietro">◀</button><button type="button" data-a="prm" data-i="${i}" aria-label="Togli">✕</button><button type="button" data-a="pmv" data-i="${i}" data-d="1" ${i===p.length-1?"disabled":""} aria-label="Sposta avanti">▶</button></div></div>`).join("")+`</div>`;
+ if(p.length<4)h+=`<label for="f-photos" style="margin:10px 0 6px">Aggiungi foto (${p.length}/4)</label><input type="file" id="f-photos" accept="image/*" multiple>`;
+ return h}
+function renderPhotos(){const el=$("#pm");if(el&&edit)el.innerHTML=pmHtml(edit)}
+function norm(i){if(!Array.isArray(i.photos)){i.photos=[i.photo,i.photo2].filter(Boolean);delete i.photo;delete i.photo2;put(i)}}
+let lbL=[],lbI=0,lbSw=false,lbX=0;
+function lbShow(){const lb=document.getElementById("lb");lb.querySelector("img").src=lbL[lbI];lb.querySelector(".cn").textContent=`${lbI+1} / ${lbL.length}`;lb.classList.toggle("one",lbL.length<2);lb.hidden=false}
+function lbGo(d){if(lbL.length<2)return;lbI=(lbI+d+lbL.length)%lbL.length;lbShow()}
+(()=>{const lb=document.getElementById("lb");
+ lb.addEventListener("touchstart",e=>{lbX=e.changedTouches[0].clientX},{passive:true});
+ lb.addEventListener("touchend",e=>{const dx=e.changedTouches[0].clientX-lbX;if(Math.abs(dx)>50&&lbL.length>1){lbGo(dx<0?1:-1);lbSw=true}},{passive:true})})();
+function bkInfo(){let d="";try{d=localStorage.getItem("monster_lastbackup")||""}catch(e){}return d?"Ultimo backup: "+d+". Salva il file su iCloud o Drive.":"Nessun backup fatto. Esporta e salva il file su iCloud o Drive."}
+async function exportBackup(){
+ const d=new Date().toISOString().slice(0,10),name=`monster-backup-${d}.json`;
+ const blob=new Blob([JSON.stringify({app:"monster",v:1,date:d,items})],{type:"application/json"});
+ let done=false;
+ try{const f=new File([blob],name,{type:"application/json"});if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:name});done=true}}catch(e){if(e&&e.name==="AbortError")return}
+ if(!done){const u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000)}
+ try{localStorage.setItem("monster_lastbackup",d)}catch(e){}
+ if(tab==="stats")render();
+}
+function cleanItem(x){
+ if(!x||typeof x!=="object"||typeof x.id!=="string"||typeof x.name!=="string")return null;
+ const n=(v,lo,hi,df)=>{v=Math.round(Number(v));return isFinite(v)?Math.max(lo,Math.min(hi,v)):df};
+ const ph=Array.isArray(x.photos)?x.photos:[x.photo,x.photo2];
+ return {id:x.id.slice(0,60),name:x.name.slice(0,120),line:String(x.line||"Altre").slice(0,80),owned:!!x.owned,year:String(x.year||"").slice(0,4),country:String(x.country||"").slice(0,60),note:String(x.note||"").slice(0,300),
+  photos:ph.filter(p=>typeof p==="string"&&p.startsWith("data:image/")).slice(0,4),qty:n(x.qty,1,99,1),swap:n(x.swap,0,99,0),wish:!!x.wish&&!x.owned,custom:!!x.custom,ord:x.ord==null?undefined:n(x.ord,0,100000,undefined)};
+}
+async function importBackup(file){
+ try{
+  const j=JSON.parse(await file.text()),arr=(Array.isArray(j)?j:j&&j.items),list=Array.isArray(arr)?arr.map(cleanItem).filter(Boolean):[];
+  if(!list.length){alert("File non valido: nessuna lattina trovata.");return}
+  if(!confirm(`Importare ${list.length} voci? Quelle con lo stesso gusto vengono sostituite, le altre restano.`))return;
+  list.forEach(it=>{if(it.ord===undefined)delete it.ord;const k=items.findIndex(x=>x.id===it.id);if(k<0)items.push(it);else items[k]=it;put(it)});
+  render();alert("Backup importato.");
+ }catch(e){alert("Non riesco a leggere questo file.")}
+}
+function shrink(file){return new Promise(res=>{const r=new FileReader();r.onload=()=>{const img=new Image();img.onload=()=>{const m=640,k=Math.min(1,m/Math.max(img.width,img.height));const c=document.createElement("canvas");c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext("2d").drawImage(img,0,0,c.width,c.height);res(c.toDataURL("image/jpeg",.8))};img.src=r.result};r.readAsDataURL(file)})}
+function save(){
+ const e=edit,n=$("#f-name").value.trim();
+ if(!n){$("#f-name").focus();return}
+ e.name=n;e.line=$("#f-linea").value.trim()||"Altre";e.note=$("#f-note").value.trim();e.year=$("#f-year").value.trim();e.country=$("#f-country").value.trim();e.owned=$("#f-owned").checked;e.wish=$("#f-wish").checked&&!e.owned;e.qty=e.qty||1;e.swap=e.swap||0;
+ const it=Object.assign({},e);delete it.isNew;delete it.photo;delete it.photo2;
+ const k=items.findIndex(x=>x.id===it.id);
+ if(k<0)items.push(it);else items[k]=it;
+ put(it);edit=null;render();
+}
+document.addEventListener("click",ev=>{
+ const lb=ev.target.closest("#lb");
+ if(lb){ev.stopPropagation();ev.preventDefault();
+  if(lbSw){lbSw=false;return}
+  const b=ev.target.closest("button");
+  if(b&&b.classList.contains("pv"))lbGo(-1);
+  else if(b&&b.classList.contains("nx"))lbGo(1);
+  else lb.hidden=true;
+  return}
+ const im=ev.target.closest(".pic img,#pm img");
+ if(im){ev.stopPropagation();ev.preventDefault();
+  const c=im.closest(".card");
+  lbL=c?((items.find(x=>x.id===c.dataset.id)||{}).photos||[]):(edit?edit.photos:[]);
+  lbI=+im.dataset.i||0;if(lbL.length)lbShow();return}
+},true);
+document.addEventListener("click",ev=>{
+ const t=ev.target.closest("[data-a],nav button");
+ if(!t)return;
+ if(t.dataset.tab){tab=t.dataset.tab;render();window.scrollTo(0,0);return}
+ const a=t.dataset.a,id=t.dataset.id;
+ if(a==="tog"){const i=items.find(x=>x.id===id);i.owned=!i.owned;if(i.owned)i.wish=false;put(i);render()}
+ else if(a==="edit"){edit=Object.assign({},items.find(x=>x.id===id));edit.photos=(edit.photos||[]).slice();renderSheet()}
+ else if(a==="new"){edit={id:"c"+Date.now(),name:"",line:"Altre",owned:true,year:"",country:"",photos:[],qty:1,swap:0,wish:false,custom:true,isNew:true};renderSheet()}
+ else if(a==="flt"){flt=t.dataset.k;render()}
+ else if(a==="got"){const i=items.find(x=>x.id===id);i.owned=true;i.wish=false;put(i);render()}
+ else if(a==="newwish"){edit={id:"c"+Date.now(),name:"",line:"Altre",owned:false,year:"",country:"",photos:[],qty:1,swap:0,wish:true,custom:true,isNew:true};renderSheet()}
+ else if(a==="swp"){swo=!swo;render()}
+ else if(a==="qty"){const f=t.dataset.f,b=edit[f]!=null?edit[f]:(f==="qty"?1:0),v=Math.max(f==="qty"?1:0,Math.min(99,b+ +t.dataset.d));edit[f]=v;$("#v-"+f).textContent=v}
+ else if(a==="exp")exportBackup();
+ else if(a==="imp")$("#f-imp").click();
+ else if(a==="srt"){srt=t.dataset.k;try{localStorage.setItem("monster_sort",srt)}catch(e){}render()}
+ else if(a==="mv"){const o=sortItems(items.filter(i=>i.owned),"man");o.forEach((x,k)=>x.ord=k);const k=o.findIndex(x=>x.id===id),j=k+ +t.dataset.d;if(j>=0&&j<o.length){const z=o[k].ord;o[k].ord=o[j].ord;o[j].ord=z}o.forEach(put);render()}
+ else if(a==="pmv"){const i=+t.dataset.i,j=i+ +t.dataset.d,p=edit.photos;if(j>=0&&j<p.length){[p[i],p[j]]=[p[j],p[i]];renderPhotos()}}
+ else if(a==="prm"){edit.photos.splice(+t.dataset.i,1);renderPhotos()}
+ else if(a==="eline"){editLine={old:t.dataset.l,name:t.dataset.l,n:items.filter(x=>x.line===t.dataset.l).length};renderSheet()}
+ else if(a==="lsave"){const n=$("#f-line").value.trim();if(!n){$("#f-line").focus();return}items.forEach(i=>{if(i.line===editLine.old){i.line=n;put(i)}});editLine=null;render()}
+ else if(a==="lclose"){editLine=null;renderSheet()}
+ else if(a==="ldel"){if(!t.dataset.cd){t.dataset.cd="1";t.textContent="Sicuro? Elimina";return}const o=editLine.old;items.filter(i=>i.line===o).forEach(i=>del(i.id));items=items.filter(i=>i.line!==o);editLine=null;render()}
+ else if(a==="save")save();
+ else if(a==="close"){edit=null;renderSheet()}
+ else if(a==="del"){if(!t.dataset.cd){t.dataset.cd="1";t.textContent="Sicuro? Elimina";return}items=items.filter(x=>x.id!==edit.id);del(edit.id);edit=null;render()}
+});
+document.addEventListener("input",ev=>{if(ev.target.id==="q"){q=ev.target.value;$("#rows").innerHTML=rows()}});
+document.addEventListener("change",async ev=>{
+ if(ev.target.id==="f-imp"&&ev.target.files[0]){const f=ev.target.files[0];ev.target.value="";await importBackup(f);return}
+ if(ev.target.id==="f-photos"&&edit){const fs=[...ev.target.files].slice(0,4-edit.photos.length);for(const f of fs)edit.photos.push(await shrink(f));renderPhotos()}
+});
+(async()=>{
+ try{db=await openDb();items=await getAll();items.forEach(norm)}catch(e){db=null;$("#warn").hidden=false}
+ let sd=false;try{sd=localStorage.getItem("monster_seeded")==="1"}catch(e){}
+ if(!items.length&&!sd){seed();items.forEach(put)}
+ try{if(items.length)localStorage.setItem("monster_seeded","1")}catch(e){}
+ try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
+ render();
+})();
+</script>
+</body>
+</html>
